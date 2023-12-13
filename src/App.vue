@@ -1,26 +1,54 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="container">
+    <header class="navbar"><NavPage /></header>
+    <aside class="sidebar"><DashboardPage/></aside>
+    <main class="main-content"><HomePage/></main>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import HomePage from './components/HomePage.vue'
+import NavPage from './components/NavPage.vue'
+import DashboardPage from './components/DashboardPage.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
-  }
+    HomePage,
+    NavPage,
+    DashboardPage,
+  },
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.container {
+  display: grid;
+  grid-template-areas:
+    'navbar navbar navbar'
+    'sidebar content content';
+  grid-template-rows: 60px 1fr;
+  grid-template-columns: 200px 1fr;
+  height: 100vh;
+  padding: 0%;
+}
+.navbar {
+  grid-area: navbar;
+  background-color: #333;
+  color: white;
+}
+
+.sidebar {
+  grid-area: sidebar;
+  background-color: #f2f2f2;
+}
+
+.main-content {
+  grid-area: content;
 }
 </style>
