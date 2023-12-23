@@ -2,19 +2,20 @@
   <div class="container">
     <header class="navbar"><NavPage /></header>
     <aside class="sidebar"><DashboardPage/></aside>
-    <main class="main-content"><HomePage/></main>
+    <main class="main-content">
+      <RouterView></RouterView>
+    </main>
+    
   </div>
 </template>
 
 <script>
-import HomePage from './components/HomePage.vue'
 import NavPage from './components/NavPage.vue'
 import DashboardPage from './components/DashboardPage.vue'
 
 export default {
   name: 'App',
   components: {
-    HomePage,
     NavPage,
     DashboardPage,
   },
@@ -50,5 +51,10 @@ export default {
 
 .main-content {
   grid-area: content;
+  background-color: #2f3231;
+}
+a {
+  text-decoration: none;
+  color: #ffff;
 }
 </style>

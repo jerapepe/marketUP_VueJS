@@ -1,9 +1,10 @@
 <template>
     <div class="container-nav">
         <div class="nav-content">
-            <h3>Inicio</h3>
-            <h3>Mapa</h3>
-            <h3>Productos</h3>
+            <h3><router-link to="/">Inicio</router-link></h3>
+            <h3><router-link to="/mapa">Mapa</router-link></h3>
+            <h3><router-link to="/productos">Productos</router-link></h3>
+            <h3><router-link to="/profile">Perfil</router-link></h3>
         </div>
         <div class="login">
             <h4><router-link to="/login">Iniciar sesion</router-link></h4>
