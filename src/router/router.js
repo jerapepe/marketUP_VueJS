@@ -5,14 +5,16 @@ import Post from '../components/PostComponent.vue'
 import Cont from '../components/ContenPage.vue'
 import Profile from '../components/ProfilePage.vue'
 import Mapa from '../components/MapaPage.vue'
+import Us from '../components/UsComponent.vue'
 
 const routes = [
   { path: '/', component: Home },
-  { path: '/login', component: Login },
-  { path: '/post', component: Post},
+  { path: '/post', component: Login },
+  { path: '/login', component: Post},
   { path: '/conte', component: Cont},
   { path: '/profile', component: Profile},
   { path: '/mapa', component: Mapa},
+  { path: '/us', component: Us},
 ];
 
 const router = createRouter({

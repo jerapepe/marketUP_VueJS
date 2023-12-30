@@ -2,7 +2,7 @@
   <div class="container-main">
     <h2>Home</h2>
     
-    <div v-for="(post, index) in posts" :key="index" class="post">
+    <div v-for="(post, index) in posts" :key="index" class="postr">
       <p>{{ post.content }}</p>
       <small>Por: {{ post.author }}</small>
     </div>
@@ -40,7 +40,7 @@ export default {
   text-align: center;
 }
 
-.post {
+.postr {
   border: 1px solid #ccc;
   border-radius: 8px;
   padding: 10px;

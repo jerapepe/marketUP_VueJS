@@ -1,49 +1,95 @@
 <template>
-  <div class="container-main">
-    <h2>Login</h2>
-    <h3>Este es el login</h3>
+    <div class="container-mains">
+        <h3>Iniciar sesion</h3>
+        <div class="post">
+            <form @submit.prevent="enviarDatos">
+                <div class="login">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" v-model="formData.username" class="texg">
 
-    <button @click="login">Iniciar Sesión</button>
-    <button @click="logout">Cerrar Sesión</button>
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" v-model="formData.password">
+                    <button type="submit">Enviar</button>
+                </div>
+            </form>
+        </div>
+        <h3>Registrarse</h3>
+        <div class="post">
+            <form @submit.prevent="enviarDatos">
+                <label for="name">Nombre:</label>
+                <input type="text" id="name" v-model="formData.name">
 
-    <routerLink to="/post">Posts</routerLink>
-    <div>
-      <div v-if="isAuthenticated">
-        <router-view></router-view>
-      </div>
-      <div v-else>El usuario no esta loggeado</div>
+                <label for="email">Email:</label>
+                <input type="email" id="email" v-model="formData.email">
+
+                <label for="username">Username:</label>
+                <input type="text" id="username" v-model="formData.username">
+
+                <label for="password">Password:</label>
+                <input type="password" id="password" v-model="formData.password">
+
+                <button type="submit">Enviar</button>
+            </form>
+        </div>
     </div>
-  </div>
 </template>
-
+  
 <script>
-import { mapState } from 'vuex';
+import axios from 'axios';
 export default {
-  computed: {
-    ...mapState(['isLoggedIn']),
-
-    isAuthenticated() {
-      return this.isLoggedIn;
-    }
-  },
-  methods: {
-    login() {
-      this.$store.dispatch('updateLoggedIn', true);
+    data() {
+        return {
+            formData: {
+                name:'',
+                email:'',
+                username: '',
+                password: ''
+            }
+        };
     },
-    logout() {
-      this.$store.dispatch('updateLoggedIn', false);
+    methods: {
+        enviarDatos() {
+            axios.post('http://192.168.0.73:8000/tu-ruta', this.formData)
+                .then(response => {
+                    console.log('Datos enviados correctamente', response.data);
+                })
+                .catch(error => {
+                    console.log("errors");
+                    console.error('Error al enviar datos:', error);
+                });
+        }
     }
-  },
 };
 </script>
 
 <style>
-.container-main {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  text-align: center;
-  padding: 5px;
-
+.container-mains {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 }
+
+.post {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    box-shadow: 2px 4px 5px gray;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+    width: 80%;
+    max-width: 700px;
+    background-color: #363131;
+    color: black;
+    height: 100px;
+}
+.texg{
+    border: 1px solid #0f0f0f;
+}
+.login{
+    display: flex;
+    align-self: start;
+    flex-direction: row;
+}
+
 </style>
