@@ -1,32 +1,25 @@
 <template>
   <div class="container-main">
-    <h2>Home</h2>
-    
-    <div v-for="(post, index) in posts" :key="index" class="postr">
-      <p>{{ post.content }}</p>
-      <small>Por: {{ post.author }}</small>
     </div>
-  </div>
+    <h3>Usuarios</h3>
+    <div v-for="(user, index) in users" :key="index" class="postr">
+      <p>Nombre: {{ user.Name }}</p>
+      <small>Apellido: {{user.LastName}}</small>
+      <small>Email: {{ user.Email }}</small>
+      <small>Username: {{user.Username}}</small>
+      <small>Role: {{user.Role}}</small>
+    </div>
 </template>
 
 <script>
 export default {
   data() {
     return {
-      posts: [
-        {
-          content: "¡Hola mundo!",
-          author: "Usuario 1"
-        },
-        {
-          content: "Estoy aprendiendo Vue.js",
-          author: "Usuario 2"
-        },
-        {
-          content: "¡Qué bonito día!",
-          author: "Usuario 3"
-        }
-      ]
+      formData: {
+        username: '',
+        password: ''
+      },
+      users: []
     };
   }
 };

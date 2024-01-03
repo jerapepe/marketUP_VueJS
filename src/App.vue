@@ -19,6 +19,7 @@ export default {
     NavPage,
     DashboardPage,
   },
+  
 }
 </script>
 

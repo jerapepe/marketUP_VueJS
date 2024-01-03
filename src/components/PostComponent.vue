@@ -1,51 +1,59 @@
 <template>
   <div class="container-mains">
-    <h3>Iniciar sesión</h3>
-    <div class="post">
-      <form @submit.prevent="enviar">
-        <div class="form-group">
-          <label for="username">Username:</label>
-          <input type="text" id="username" v-model="formData.username" class="texg">
-        </div>
-        <div class="form-group">
-          <label for="password">Password:</label>
-          <input type="password" id="password" v-model="formData.password" class="texg">
-          <button type="submit">Enviar</button>
-        </div>
-      </form>
-    </div>
+    <AlertBox v-if="showAlert" :message="alertMessage" />
+    <div v-if="!loggedIn">
+      <h3>Iniciar sesión</h3>
+      <div class="post">
+        <form @submit.prevent="enviar">
+          <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" v-model="formData.username" class="texg">
+          </div>
+          <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" v-model="formData.password" class="texg">
+            <button type="submit">Enviar</button>
+          </div>
+        </form>
+      </div>
 
-    <h3>Registrarse</h3>
-    <div class="post">
-      <form @submit.prevent="enviarDatos">
-        <div class="form-group">
-          <label for="name">Nombre:</label>
-          <input type="text" id="name" v-model="formData.name" class="texg">
-        </div>
-        <div class="form-group">
-          <label for="lastname">Apellido:</label>
-          <input type="text" id="lastname" v-model="formData.lastname" class="texg">
-        </div>
-        <div class="form-group">
-          <label for="email">Email:</label>
-          <input type="email" id="email" v-model="formData.email" class="texg">
-        </div>
-        <div class="form-group">
-          <label for="username">Username:</label>
-          <input type="text" id="username" v-model="formData.username" class="texg">
-        </div>
-        <div class="form-group">
-          <label for="password">Password:</label>
-          <input type="password" id="password" v-model="formData.password" class="texg">
-          <button type="submit">Enviar</button>
-        </div>
-      </form>
+      <h3>Registrarse</h3>
+      <div class="post">
+        <form @submit.prevent="enviarDatos">
+          <div class="form-group">
+            <label for="name">Nombre:</label>
+            <input type="text" id="name" v-model="formData.name" class="texg">
+          </div>
+          <div class="form-group">
+            <label for="lastname">Apellido:</label>
+            <input type="text" id="lastname" v-model="formData.lastname" class="texg">
+          </div>
+          <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" v-model="formData.email" class="texg">
+          </div>
+          <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="usernameR" v-model="formData.username" class="texg">
+          </div>
+          <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="passwordR" v-model="formData.password" class="texg">
+            <button type="submit">Enviar</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import AlertBox from '@/components/AlertComponent.vue';
+
 export default {
+  components: {
+    AlertBox,
+  },
   data() {
     return {
       formData: {
@@ -53,51 +61,82 @@ export default {
         email: '',
         username: '',
         password: ''
+      },
+      showAlert: false,
+      loggedIn: false,
+      usuario: {
+        username: '',
+        token: '',
       }
     };
   },
   methods: {
     enviarDatos() {
-      fetch('http://localhost:8000/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(this.formData)
-      })
-      .then(response => {
-        if (!response.ok) {
-            throw new Error('Error en la solicitud');
-          }
-          return response.json();
+      if (this.formData.name == "" && this.formData.email == "" && this.formData.username == "" && this.formData.password == "") {
+        this.alertMessage = "Completar registro";
+        this.showAlert = true;
+      } else {
+        fetch('http://localhost:8000/signup', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(this.formData)
         })
-        .then(data => {
-          console.log('Respuesta del servidor:', data);
-        })
-        .catch(error => {
-          console.error('Error al enviar datos:', error);
-        });
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Error en la solicitud');
+            }
+            return response.json();
+          })
+          .then(data => {
+            this.alertMessage = data.isVerified;
+            this.showAlert = true;
+            this.loggedIn = true;
+          })
+          .catch(error => {
+            this.alertMessage = "Error al enviar datos";
+            this.showAlert = true;
+            console.error('Error al enviar datos:', error);
+          });
+      }
     },
     enviar() {
-      fetch('http://localhost:8000/signin', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(this.formData)
-      })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Error en la solicitud');
-          }
-          return response.json();
+      if (this.formData.username == "" && this.formData.password == "") {
+        this.alertMessage = "Complete los datos";
+        this.showAlert = true;
+      } else {
+        fetch('http://localhost:8000/signin', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(this.formData)
         })
-        .then(data => {
-          console.log('Respuesta del servidor:', data);
-        })
-        .catch(error => {
-          console.error('Error al enviar datos:', error);
-        });
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Error en la solicitud');
+            }
+            return response.json();
+          })
+          .then(data => {
+            this.alertMessage = data.isVerified;
+            this.showAlert = true;
+            if (data.username != null) {
+              this.usuario.username = data.username;
+              this.usuario.token = data.token;
+              localStorage.setItem('username', data.username);
+              localStorage.setItem('token', data.token);
+              //this.$store.dispatch('updateLoggedIn', { value: true, username: data.username, token: data.token});
+              this.$router.push('/profile');
+            }
+          })
+          .catch(error => {
+            this.alertMessage = "Datos incorrectos: " + error;
+            this.showAlert = true;
+            //console.error('Error al enviar datos:', error);
+          });
+      }
     },
     work() {
       fetch('http://localhost:8000/signin', {
@@ -105,7 +144,7 @@ export default {
         headers: {
           'Content-Type': 'application/json'
         }
-        })
+      })
         .then(response => {
           if (!response.ok) {
             throw new Error('Network response was not ok');
@@ -116,9 +155,9 @@ export default {
           console.log('Datos obtenidos correctamente:', data);
         })
         .catch(error => {
-            console.error('Error al obtener datos:', error);
+          console.error('Error al obtener datos:', error);
         });
-    }
+    },
   }
 };
 </script>

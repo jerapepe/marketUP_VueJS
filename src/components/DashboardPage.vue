@@ -4,13 +4,16 @@
             <h2>Dashboard</h2>
         </div>
         <div>
-            Secciones
+            <RouterLink to="">Secciones</RouterLink>
         </div>
         <div>
-            Pasos
+            <RouterLink to="">Pasos</RouterLink>
         </div>
         <div>
-            <RouterLink to="/us">Login</RouterLink>
+            <RouterLink to="/login">Login</RouterLink>
+        </div>
+        <div>
+            <RouterLink to="/admin">Admin</RouterLink>
         </div>
     </div>
 </template>

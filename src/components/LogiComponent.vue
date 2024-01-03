@@ -28,7 +28,7 @@ export default {
   },
   methods: {
     login() {
-      this.$store.dispatch('updateLoggedIn', true);
+      this.$store.dispatch('updateLoggedIn', { value: true, username: 'miNombre' });
     },
     logout() {
       this.$store.dispatch('updateLoggedIn', false);

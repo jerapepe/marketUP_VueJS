@@ -5,7 +5,7 @@ import Post from '../components/PostComponent.vue'
 import Cont from '../components/ContenPage.vue'
 import Profile from '../components/ProfilePage.vue'
 import Mapa from '../components/MapaPage.vue'
-import Us from '../components/UsComponent.vue'
+import Admin from '../components/AdminComponent.vue'
 
 const routes = [
   { path: '/', component: Home },
@@ -14,7 +14,7 @@ const routes = [
   { path: '/conte', component: Cont},
   { path: '/profile', component: Profile},
   { path: '/mapa', component: Mapa},
-  { path: '/us', component: Us},
+  { path: '/admin', component: Admin},
 ];
 
 const router = createRouter({

@@ -3,17 +3,55 @@
         <div class="nav-content">
             <h3><router-link to="/">Inicio</router-link></h3>
             <h3><router-link to="/mapa">Mapa</router-link></h3>
-            <h3><router-link to="/productos">Productos</router-link></h3>
+            <h3><router-link to="/">Productos</router-link></h3>
             <h3><router-link to="/profile">Perfil</router-link></h3>
         </div>
-        <div class="login">
-            <h4><router-link to="/login">Iniciar sesion</router-link></h4>
+        <div v-if="isLoggedIn" class="logout">
+            <h4><router-link to="/login" @click="loggout">Cerrar sesión</router-link></h4>
+        </div>
+        <div v-else class="login">
+            <h4><router-link to="/login" @click="login">Iniciar sesión</router-link></h4>
         </div>
     </div>
 </template>
   
 <script>
 export default {
+    data() {
+        return {
+            isLoggedIn: false,
+        }
+    },
+    mounted() {
+        this.checkLoginStatus();
+    },
+    methods: {
+        checkLoginStatus() {
+            const userData = localStorage.getItem('username');
+            if (userData) {
+                this.isLoggedIn = true;
+            } else {
+                this.isLoggedIn = false;
+            }
+        },
+        logout() {
+            this.isLoggedIn = false;
+            localStorage.removeItem('username');
+            localStorage.removeItem('token');
+            this.checkLoginStatus();
+            console.log("se cliceo");
+        },
+        login(){
+            this.isLoggedIn = true;
+            this.checkLoginStatus();
+        },
+    },  
+    watch:{
+        isLoggedIn(newValue){
+            console.log("cambio el valor: ", newValue);
+            this.checkLoginStatus();
+        }
+    },
 }
 </script>
   
@@ -30,7 +68,7 @@ export default {
 
 .nav-content {
     display: flex;
-    gap:40px;
+    gap: 40px;
 }
 
 .login {
