@@ -1,6 +1,12 @@
+<script setup>
+import NavPage from './components/NavPage.vue'
+import DashboardPage from './components/DashboardPage.vue'
+
+</script>
+
 <template>
   <div class="container">
-    <header class="navbar"><NavPage /></header>
+    <header class="navbar"><NavPage/></header>
     <aside class="sidebar"><DashboardPage/></aside>
     <main class="main-content">
       <RouterView></RouterView>
@@ -8,20 +14,6 @@
     
   </div>
 </template>
-
-<script>
-import NavPage from './components/NavPage.vue'
-import DashboardPage from './components/DashboardPage.vue'
-
-export default {
-  name: 'App',
-  components: {
-    NavPage,
-    DashboardPage,
-  },
-  
-}
-</script>
 
 <style>
 * {
@@ -43,11 +35,13 @@ export default {
   grid-area: navbar;
   background-color: #333;
   color: white;
+  border-bottom: 1px solid #555;
 }
 
 .sidebar {
   grid-area: sidebar;
-  background-color: #f2f2f2;
+  background-color: #333;
+  border-right: 1px solid #555;
 }
 
 .main-content {

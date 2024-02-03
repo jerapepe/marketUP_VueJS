@@ -1,13 +1,10 @@
 <template>
     <div class="dashboard">
-        <div class="dashTitle">
-            <h2>Dashboard</h2>
+        <div>
+            <RouterLink to="/products">Productos</RouterLink>
         </div>
         <div>
-            <RouterLink to="">Secciones</RouterLink>
-        </div>
-        <div>
-            <RouterLink to="">Pasos</RouterLink>
+            <RouterLink to="/add">Pasos</RouterLink>
         </div>
         <div>
             <RouterLink to="/login">Login</RouterLink>
@@ -15,7 +12,11 @@
         <div>
             <RouterLink to="/admin">Admin</RouterLink>
         </div>
+        <div>
+            <RouterLink to="/access">Admin</RouterLink>
+        </div>
     </div>
+    
 </template>
   
 <script>
@@ -31,13 +32,12 @@ export default {
     display: flex;
     flex-direction: column;
     height: 100%;
-    background-color: rgb(62, 68, 66);
+    /*background-color: rgb(62, 68, 66);*/
     gap: 15px;
     align-items: center;
     color: white;
-}
-
-.dashTitle {
-
+    margin-bottom: 10px;
+    padding: 15px;
+    font-size: 20px;
 }
 </style>  

@@ -8,13 +8,14 @@ const store = createStore({
   },
   mutations: {
     setLoggedIn(state, payload) {
-      state.isLoggedIn = payload.value;
-      state.username = payload.username;
-      state.token = payload.token;
+      const { value, username, token } = payload;
+      state.isLoggedIn = value;
+      state.username = username;
+      state.token = token;
     }
   },
   actions: {
-    updateLoggedIn({ commit }, payload) {
+   async updateLoggedIn({ commit }, payload) {
       commit('setLoggedIn', payload);
     }
   },
