@@ -1,7 +1,6 @@
 <script setup>
 import NavPage from './components/NavPage.vue'
 import DashboardPage from './components/DashboardPage.vue'
-
 </script>
 
 <template>
@@ -15,7 +14,7 @@ import DashboardPage from './components/DashboardPage.vue'
   </div>
 </template>
 
-<style>
+<style scoped>
 * {
   margin: 0;
   padding: 0;
@@ -46,7 +45,7 @@ import DashboardPage from './components/DashboardPage.vue'
 
 .main-content {
   grid-area: content;
-  background-color: #2f3231;
+  /*background-color: #2f3231;*/
 }
 a {
   text-decoration: none;

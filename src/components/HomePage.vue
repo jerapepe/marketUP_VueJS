@@ -1,3 +1,63 @@
+<script setup >
+import axios from "axios"
+import { ref } from 'vue';
+import { onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+const user = ref({
+  name: '',
+  email: '',
+  username: '',
+  lastname: '',
+});
+const token = ref('');
+const users = ref([]);
+const formData = ref({
+  token: '',
+});
+onMounted(() => {
+  const tokenAd = localStorage.getItem('token');
+  formData.value.token = tokenAd;
+  if (tokenAd == "" && tokenAd == " "){
+    console.log("vacio");
+  } else {
+    aUser();
+  }
+});
+const aUser = () => {
+			const tokens = localStorage.getItem('token');
+			formData.value.token = tokens;
+			axios.post('http://localhost:8000/access', formData, {
+				headers: {
+					'Content-Type': 'application/json',
+					'Authorization': `Bearer ${formData.value.token}`,
+				},
+			})
+				.then(response => {
+					if (!response.status >= 200 && !response.status < 300) {
+						throw new Error(`Error en la solicitud (${response.status}): ${response.statusText}`);
+					}
+					return response.data;
+				})
+				.then(data => {
+					if (data.user === "tokenExpired") {
+						localStorage.removeItem('token');
+						router.push('/login');
+					}
+					user.value.name = data.user.Name;
+					user.value.email = data.user.Email;
+					user.value.username = data.user.Username;
+					user.value.lastname = data.user.LastName;
+					//token.value = data.token;
+          token.value = tokens;
+				})
+				.catch(error => {
+					console.error('Error al enviar datos:', error);
+				});
+		}
+</script>
+
 <template>
   <div class="container-main">
   </div>
@@ -11,67 +71,14 @@
   </div>
 </template>
 
-<script>
-import axios from "axios"
-export default {
-  data() {
-    return {
-      formData: {
-        token: '',
-      },
-      users: []
-    };
-  },
-  mounted() {
-    const tokenAd = localStorage.getItem('token');
-    this.formData.token = tokenAd;
-    if (tokenAd == "" && tokenAd == " "){
-      console.log("vacio");
-    } else {
-      this.aUser();
-    }
-  },
-  methods: {
-    aUser() {
-			const token = localStorage.getItem('token');
-			this.formData.token = token;
-			axios.post('http://localhost:8000/access', this.formData, {
-				headers: {
-					'Content-Type': 'application/json',
-					'Authorization': `Bearer ${this.formData.token}`,
-				},
-			})
-				.then(response => {
-					if (!response.status >= 200 && !response.status < 300) {
-						throw new Error(`Error en la solicitud (${response.status}): ${response.statusText}`);
-					}
-					return response.data;
-				})
-				.then(data => {
-					if (data.user === "tokenExpired") {
-						localStorage.removeItem('token');
-						this.$router.push('/login');
-					}
-					this.user.name = data.user.Name;
-					this.user.email = data.user.Email;
-					this.user.username = data.user.Username;
-					this.user.lastname = data.user.LastName;
-					this.token = token; 
-				})
-				.catch(error => {
-					console.error('Error al enviar datos:', error);
-				});
-		}
-  },
-};
-</script>
 
-<style>
+<style scoped>
 .container-main {
   display: flex;
   align-items: center;
   flex-direction: column;
   text-align: center;
+  padding: 10px;
 }
 
 .postr {

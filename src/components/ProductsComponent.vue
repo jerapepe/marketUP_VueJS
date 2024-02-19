@@ -1,9 +1,56 @@
+<script setup>
+import SearchBar from '../components/SearchBar.vue';
+import { ref } from 'vue';
+import { onMounted } from 'vue';
+
+const products = ref([]);
+
+onMounted(() => {
+    searchProducts();
+});
+
+const updateProducts = (searchResults) => {
+    products.value = [];
+    products.value = searchResults;
+};
+
+const searchProducts = () => {
+    fetch('http://192.168.0.73:8000/products', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error en la solicitud');
+            }
+            return response.json();
+        })
+        .then(data => {
+            products.value = data.products;
+        })
+        .catch(error => {
+            console.error('Error al enviar datos:', error);
+        });
+};
+/*
+const foodProducts = () => {
+    return products.value.filter(product => product.Category === 'food');
+};
+
+const figureProducts = () => {
+    return products.value.filter(product => product.Category === 'figures');
+};
+*/
+</script>
+
 <template>
     <div class="container-main">
         <SearchBar @search-results-updated="updateProducts"></SearchBar>
         <div class="categories">
             <div class="category">
-                <h3>Productos de Alimentos</h3>
+                <div class="card"><h3>Alimentos</h3></div>
                 <div v-for="(product, index) in products" :key="index" class="postr">
                     <p>Nombre: {{ product.Name }}</p>
                     <small class="user-detail">Precio: {{ product.Price }}</small>
@@ -14,82 +61,28 @@
             </div>
 
             <div class="category">
-                <h3>Productos de Figuras</h3>
+                
+                <div class="card"><h3>Figuras</h3></div>
+                <!--
                 <div v-for="(product, index) in figureProducts" :key="index" class="postr">
                     <p>Nombre: {{ product.Name }}</p>
                     <small>Precio: {{ product.Price }}</small>
                     <small>Descripción: {{ product.Description }}</small>
                     <small>Imagen: {{ product.Image }}</small>
-                </div>
+                -->
             </div>
         </div>
     </div>
 </template>
     
-<script>
-import SearchBar from '../components/SearchBar.vue';
-export default {
-    components:{
-        SearchBar,
-    },
-    data() {
-        return {
-            formData: {
-                username: '',
-            },
-            users: [],
-            products: [],
-        };
-    },
-    computed: {
-    },
-    mounted() {
-        this.searchProducts();
-    },
-    methods: {
-        updateProducts(searchResults) {
-            this.products = [];
-            this.products = searchResults;
-        },
-        searchProducts(){
-            fetch('http://localhost:8000/products', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Error en la solicitud');
-                }
-                return response.json();
-            })
-            .then(data => {
-                this.products = data.products;
-            })
-            .catch(error => {
-                console.error('Error al enviar datos:', error);
-            });
-        }
-        // Filtra los productos por categoría
-        /*
-        foodProducts() {
-            return this.products.filter(product => product.Category === 'food');
-        },
-        figureProducts() {
-            return this.products.filter(product => product.Category === 'figures');
-        },
-        */
-    },
-};
-</script>
-  
-<style>
+<style scoped>
 .container-main {
     display: flex;
     align-items: center;
     flex-direction: column;
     text-align: center;
+    padding: 28px;
+    gap: 15px;
 }
 
 .categories {
@@ -102,7 +95,6 @@ export default {
     flex: 1;
     margin-right: 20px;
 }
-
 .postr {
     border: 1px solid #ccc;
     border-radius: 8px;
@@ -112,4 +104,51 @@ export default {
     background-color: #f9f9f9;
     color: black;
 }
+
+.card {
+  width: 200px;
+  height: 70px;
+  background: #07182E;
+  position: relative;
+  display: flex;
+  place-content: center;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 20px;
+}
+
+.card h3 {
+  z-index: 1;
+  color: white;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  width: 100px;
+  background-image: linear-gradient(180deg, rgb(0, 183, 255), rgb(255, 48, 255));
+  height: 130%;
+  animation: rotBGimg 3s linear infinite;
+  transition: all 0.2s linear;
+}
+
+@keyframes rotBGimg {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  background: #07182E;
+  ;
+  inset: 5px;
+  border-radius: 15px;
+}
+
 </style>

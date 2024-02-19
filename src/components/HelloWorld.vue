@@ -1,7 +1,19 @@
+<script setup>
+
+const toggleSidebar = () => {
+  const sidebar = document.getElementById("sidebar");
+  if (sidebar.style.width === "250px") {
+    sidebar.style.width = "0";
+  } else {
+    sidebar.style.width = "250px";
+  }
+};
+</script>
+
 <template>
 <div class="navbar">
     <div class="navbar-header">
-        <span class="menu-icon" @click="toggleSidebar()">☰</span>
+        <span class="menu-icon" @click="toggleSidebar">☰</span>
         <h1>Tu Dashboard</h1>
     </div>
 </div>
@@ -17,25 +29,6 @@
     <p>Contenido principal aquí...</p>
 </div>
 </template>
-
-<script>
-export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
-  },
-  methods:{
-    toggleSidebar() {
-    var sidebar = document.getElementById("sidebar");
-    if (sidebar.style.width === "250px") {
-        sidebar.style.width = "0";
-    } else {
-        sidebar.style.width = "250px";
-      }
-    }
-  }
-}
-</script>
 
 <style scoped>
 body {

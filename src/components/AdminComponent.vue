@@ -1,3 +1,55 @@
+<script setup>
+import axios from 'axios';
+import { ref } from 'vue';
+import { onMounted } from 'vue';
+
+
+const formData = ref({
+    username : '',
+});
+
+const users = ref([]);
+
+onMounted(() =>{
+    aUser();
+});
+
+const logs = () => {
+    console.log("se clicleo");
+    localStorage.removeItem('username');
+    localStorage.removeItem('token');
+};
+
+const aUser = () => {
+    const token = localStorage.getItem('token');
+    formData.value.token = token;
+    axios.post('http://192.168.0.73:8000/admin', formData.value, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${formData.value.token}`,
+        },
+    })
+        .then(response => {
+            if (!response.status >= 200 && !response.status < 300) {
+                throw new Error(`Error en la solicitud (${response.status}): ${response.statusText}`);
+            }
+            return response.data;
+        })
+        .then(data => {
+            if (data.user === "tokenExpired") {
+                localStorage.removeItem('token');
+                this.$router.push('/login');
+            }
+            if (data.users != null) {
+                users.value = data.users;
+            }
+        })
+        .catch(error => {
+            console.error('Error al enviar datos:', error);
+        });
+};
+</script>
+  
 <template>
     <div class="container-main">
         <h3>Iniciar admin</h3>
@@ -12,59 +64,6 @@
         <button @click="logs">Cerrar sesion</button>
     </div>
 </template>
-  
-<script>
-import axios from 'axios';
-export default {
-    data() {
-        return {
-            formData: {
-                username: '',
-            },
-            users: []
-        };
-    },
-    mounted() {
-        this.aUser();
-    },
-    methods: {
-        logs() {
-            console.log("se clicleo");
-            localStorage.removeItem('username');
-            localStorage.removeItem('token');
-        },
-        aUser() {
-            const token = localStorage.getItem('token');
-            this.formData.token = token;
-            axios.post('http://localhost:8000/admin', this.formData, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${this.formData.token}`,
-                },
-            })
-                .then(response => {
-                    if (!response.status >= 200 && !response.status < 300) {
-                        throw new Error(`Error en la solicitud (${response.status}): ${response.statusText}`);
-                    }
-                    return response.data;
-                })
-                .then(data => {
-                    if (data.user === "tokenExpired") {
-                        localStorage.removeItem('token');
-                        this.$router.push('/login');
-                    }
-                    if (data.users != null) {
-                        this.users = data.users;
-                    }
-                })
-                .catch(error => {
-                    console.error('Error al enviar datos:', error);
-                });
-        }
-
-    },
-};
-</script>
   
 <style>
 .container-main {
